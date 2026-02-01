@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback, useRef, useMemo } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BlockNoteSchema, defaultBlockSpecs, createHeadingBlockSpec } from '@blocknote/core';
+import { BlockNoteSchema, defaultBlockSpecs, createHeadingBlockSpec, createCodeBlockSpec } from '@blocknote/core';
+import { createHighlighter } from './shiki.bundle';
 import { filterSuggestionItems } from '@blocknote/core/extensions';
 import { BlockNoteView } from '@blocknote/mantine';
 import {
@@ -32,7 +33,36 @@ const schema = BlockNoteSchema.create({
     numberedListItem: defaultBlockSpecs.numberedListItem,
     checkListItem: defaultBlockSpecs.checkListItem,
     // toggleListItem: excluded - not supported in markdown
-    codeBlock: defaultBlockSpecs.codeBlock,
+    codeBlock: createCodeBlockSpec({
+      indentLineWithTab: true,
+      defaultLanguage: 'text',
+      supportedLanguages: {
+        text: { name: 'Plain Text' },
+        javascript: { name: 'JavaScript', aliases: ['js'] },
+        typescript: { name: 'TypeScript', aliases: ['ts'] },
+        jsx: { name: 'JSX' },
+        tsx: { name: 'TSX' },
+        python: { name: 'Python', aliases: ['py'] },
+        html: { name: 'HTML' },
+        css: { name: 'CSS' },
+        json: { name: 'JSON' },
+        bash: { name: 'Bash', aliases: ['sh', 'shell', 'zsh'] },
+        sql: { name: 'SQL' },
+        markdown: { name: 'Markdown', aliases: ['md'] },
+        yaml: { name: 'YAML', aliases: ['yml'] },
+        go: { name: 'Go' },
+        rust: { name: 'Rust', aliases: ['rs'] },
+        java: { name: 'Java' },
+        c: { name: 'C' },
+        cpp: { name: 'C++', aliases: ['c++'] },
+        diff: { name: 'Diff' },
+        dockerfile: { name: 'Dockerfile', aliases: ['docker'] },
+      },
+      createHighlighter: () => createHighlighter({
+        themes: ['light-plus', 'dark-plus'],
+        langs: [],
+      }),
+    }),
     table: defaultBlockSpecs.table,
     quote: defaultBlockSpecs.quote,
     image: defaultBlockSpecs.image,
