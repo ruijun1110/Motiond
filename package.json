@@ -1,0 +1,64 @@
+{
+  "name": "notion-md-editor",
+  "displayName": "Notion Markdown Editor",
+  "description": "A Notion-style visual editor for Markdown files",
+  "version": "0.0.1",
+  "publisher": "your-publisher-name",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "customEditors": [
+      {
+        "viewType": "notionMd.editor",
+        "displayName": "Notion Markdown Editor",
+        "selector": [
+          {
+            "filenamePattern": "*.md"
+          }
+        ],
+        "priority": "option"
+      }
+    ],
+    "commands": [
+      {
+        "command": "notionMd.openWithNotionEditor",
+        "title": "Open with Notion Editor"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run build",
+    "build": "npm run build:extension && npm run build:webview",
+    "build:extension": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --minify",
+    "build:webview": "esbuild ./src/webview/index.tsx --bundle --outfile=dist/webview/index.js --format=iife --loader:.tsx=tsx --loader:.ts=ts --loader:.woff=dataurl --loader:.woff2=dataurl --conditions=style --minify",
+    "watch": "concurrently \"npm run watch:extension\" \"npm run watch:webview\"",
+    "watch:extension": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --watch",
+    "watch:webview": "esbuild ./src/webview/index.tsx --bundle --outfile=dist/webview/index.js --format=iife --loader:.tsx=tsx --loader:.ts=ts --loader:.woff=dataurl --loader:.woff2=dataurl --conditions=style --watch",
+    "lint": "eslint src --ext ts,tsx"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@types/vscode": "^1.85.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "concurrently": "^8.2.0",
+    "esbuild": "^0.19.0",
+    "eslint": "^8.0.0",
+    "typescript": "^5.3.0"
+  },
+  "dependencies": {
+    "@blocknote/core": "^0.46.2",
+    "@blocknote/react": "^0.46.2",
+    "@blocknote/mantine": "^0.46.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}
