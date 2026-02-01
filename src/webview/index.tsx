@@ -1,12 +1,10 @@
 import { useEffect, useState, useCallback, useRef, useMemo } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BlockNoteEditor } from '@blocknote/core';
+import { BlockNoteSchema, defaultBlockSpecs, createHeadingBlockSpec } from '@blocknote/core';
 import { filterSuggestionItems } from '@blocknote/core/extensions';
 import { BlockNoteView } from '@blocknote/mantine';
 import {
   useCreateBlockNote,
-  SuggestionMenuController,
-  getDefaultReactSlashMenuItems,
   FormattingToolbarController,
   FormattingToolbar,
   BlockTypeSelect,
@@ -14,9 +12,35 @@ import {
   CreateLinkButton,
   NestBlockButton,
   UnnestBlockButton,
+  SuggestionMenuController,
+  getDefaultReactSlashMenuItems,
 } from '@blocknote/react';
 import '@blocknote/core/fonts/inter.css';
 import '@blocknote/mantine/style.css';
+
+// Custom schema: only include markdown-compatible blocks
+// Excludes: video, audio, file, toggleListItem
+// Disables: toggle headings (collapsible headings)
+const schema = BlockNoteSchema.create({
+  blockSpecs: {
+    paragraph: defaultBlockSpecs.paragraph,
+    heading: createHeadingBlockSpec({
+      levels: [1, 2, 3, 4, 5, 6],
+      allowToggleHeadings: false,
+    }),
+    bulletListItem: defaultBlockSpecs.bulletListItem,
+    numberedListItem: defaultBlockSpecs.numberedListItem,
+    checkListItem: defaultBlockSpecs.checkListItem,
+    // toggleListItem: excluded - not supported in markdown
+    codeBlock: defaultBlockSpecs.codeBlock,
+    table: defaultBlockSpecs.table,
+    quote: defaultBlockSpecs.quote,
+    image: defaultBlockSpecs.image,
+    // video: excluded - not supported in markdown
+    // audio: excluded - not supported in markdown
+    // file: excluded - not supported in markdown
+  },
+});
 
 // VS Code API - must be declared before use
 declare const acquireVsCodeApi: () => {
@@ -144,10 +168,6 @@ async function resolveFileUrl(url: string): Promise<string> {
   return resolvedUrl;
 }
 
-// Block types that are NOT supported in markdown (will be filtered out)
-// Note: 'image' is supported via absolute file paths
-const UNSUPPORTED_BLOCK_TYPES = ['video', 'audio', 'file'];
-
 // Fix tables with empty header rows by promoting first data row to header
 function fixEmptyTableHeaders(markdown: string): string {
   // Match table pattern: header row, separator row (with multiple | chars), data rows
@@ -195,22 +215,57 @@ function Editor() {
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
   const pendingSave = useRef(false);
 
-  // Create the editor instance with file upload and resolve support
+  // Create the editor instance with custom schema and file handlers
   const editor = useCreateBlockNote({
+    schema,
     uploadFile,
     resolveFileUrl,
   });
 
-  // Get filtered slash menu items (remove unsupported blocks)
-  const getFilteredSlashMenuItems = useMemo(() => {
-    return (editor: BlockNoteEditor) => {
+  // Custom slash menu items with reorganized groups and ordering
+  const getCustomSlashMenuItems = useMemo(() => {
+    return () => {
       const defaultItems = getDefaultReactSlashMenuItems(editor);
-      // Filter out blocks that don't work with markdown
-      return defaultItems.filter(
-        (item) => !UNSUPPORTED_BLOCK_TYPES.includes(item.key as string)
-      );
+
+      // Define group order (groups appear in this order)
+      const groupOrder = ['Headings', 'Subheadings', 'Basic blocks', 'Advanced'];
+
+      // Reassign items to correct groups
+      const modifiedItems = defaultItems.map((item) => {
+        const title = item.title;
+        const originalGroup = item.group || '';
+
+        // H1-H3 go to "Headings"
+        if (title === 'Heading 1' || title === 'Heading 2' || title === 'Heading 3') {
+          return { ...item, group: 'Headings' };
+        }
+
+        // H4-H6 (Subheadings) stay in "Subheadings"
+        if (title === 'Heading 4' || title === 'Heading 5' || title === 'Heading 6' ||
+            originalGroup === 'Subheadings') {
+          return { ...item, group: 'Subheadings' };
+        }
+
+        // Table, Image, and Emoji go to "Advanced"
+        if (title === 'Table' || title === 'Image' || title === 'Emoji' ||
+            originalGroup === 'Emoji') {
+          return { ...item, group: 'Advanced' };
+        }
+
+        return item;
+      });
+
+      // Sort items by group order
+      return modifiedItems.sort((a, b) => {
+        const aIndex = groupOrder.indexOf(a.group || '');
+        const bIndex = groupOrder.indexOf(b.group || '');
+        // Items not in groupOrder go to the end
+        const aOrder = aIndex === -1 ? 999 : aIndex;
+        const bOrder = bIndex === -1 ? 999 : bIndex;
+        return aOrder - bOrder;
+      });
     };
-  }, []);
+  }, [editor]);
 
   // Perform the actual save operation
   const performSave = useCallback(async () => {
@@ -362,7 +417,7 @@ function Editor() {
       formattingToolbar={false}
       slashMenu={false}
     >
-      {/* Custom Formatting Toolbar - removes color/highlight buttons */}
+      {/* Custom Formatting Toolbar - removes color/highlight/underline buttons */}
       <FormattingToolbarController
         formattingToolbar={() => (
           <FormattingToolbar>
@@ -370,11 +425,8 @@ function Editor() {
 
             <BasicTextStyleButton basicTextStyle="bold" key="boldStyleButton" />
             <BasicTextStyleButton basicTextStyle="italic" key="italicStyleButton" />
-            <BasicTextStyleButton basicTextStyle="underline" key="underlineStyleButton" />
             <BasicTextStyleButton basicTextStyle="strike" key="strikeStyleButton" />
             <BasicTextStyleButton basicTextStyle="code" key="codeStyleButton" />
-
-            {/* Removed: ColorStyleButton - not supported in markdown */}
 
             <NestBlockButton key="nestBlockButton" />
             <UnnestBlockButton key="unnestBlockButton" />
@@ -384,11 +436,11 @@ function Editor() {
         )}
       />
 
-      {/* Custom Slash Menu - removes image/file blocks */}
+      {/* Custom Slash Menu - reorganizes groups */}
       <SuggestionMenuController
         triggerCharacter="/"
         getItems={async (query) =>
-          filterSuggestionItems(getFilteredSlashMenuItems(editor), query)
+          filterSuggestionItems(getCustomSlashMenuItems(), query)
         }
       />
     </BlockNoteView>

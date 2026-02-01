@@ -142,17 +142,13 @@ A Custom Editor extension that renders `.md` files as visual blocks, powered by 
 
 3. Add keyboard shortcuts
 
-4.
-
-5. Handle edge cases (empty files, malformed markdown)
+4. Handle edge cases (empty files, malformed markdown)
 
 ## Out of Scope (for MVP)
 
 - Databases, tables, columns
 
 - Custom block types
-
--
 
 - Real-time collaboration
 
