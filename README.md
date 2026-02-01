@@ -4,7 +4,7 @@
 
 Tired of writing docs in 'code'? Motiond brings the best Notion-style editing experience to your IDE — visual blocks, slash commands, drag-and-drop. Your files stay as plain `.md`, so they are still git-friendly and AI-friendly.
 
-![Slash Menu](media/slash-menu.png)
+![Slash Menu](https://raw.githubusercontent.com/ruijun1110/Motiond/main/media/slash-menu.png)
 
 ---
 
@@ -31,7 +31,7 @@ Tired of writing docs in 'code'? Motiond brings the best Notion-style editing ex
 | Code Blocks      | ` ``` ` with language    |
 | Tables           | Standard markdown tables |
 | Quotes           | `> blockquote`           |
-| Images           | `![alt](path)`           |
+| Images           | `![alt](path)` syntax    |
 
 ---
 
