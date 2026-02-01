@@ -59,7 +59,7 @@ const schema = BlockNoteSchema.create({
         dockerfile: { name: 'Dockerfile', aliases: ['docker'] },
       },
       createHighlighter: () => createHighlighter({
-        themes: ['light-plus', 'dark-plus'],
+        themes: ['github-light', 'github-dark'],
         langs: [],
       }),
     }),

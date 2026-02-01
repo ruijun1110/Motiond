@@ -46,7 +46,7 @@ type BundledLanguage =
   | 'diff'
   | 'docker'
   | 'dockerfile'
-type BundledTheme = 'light-plus' | 'dark-plus'
+type BundledTheme = 'github-light' | 'github-dark'
 type Highlighter = HighlighterGeneric<BundledLanguage, BundledTheme>
 
 const bundledLanguages = {
@@ -88,8 +88,8 @@ const bundledLanguages = {
 } as Record<BundledLanguage, DynamicImportLanguageRegistration>
 
 const bundledThemes = {
-  'light-plus': () => import('@shikijs/themes/light-plus'),
-  'dark-plus': () => import('@shikijs/themes/dark-plus'),
+  'github-light': () => import('@shikijs/themes/github-light'),
+  'github-dark': () => import('@shikijs/themes/github-dark'),
 } as Record<BundledTheme, DynamicImportThemeRegistration>
 
 const createHighlighter = /* @__PURE__ */ createBundledHighlighter<
