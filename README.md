@@ -31,7 +31,7 @@ Tired of writing docs in 'code'? Motiond brings the best Notion-style editing ex
 | Code Blocks      | ` ``` ` with language    |
 | Tables           | Standard markdown tables |
 | Quotes           | `> blockquote`           |
-| Images           | `![alt](path)` syntax    |
+| Images           | `\![alt](path)`          |
 
 ---
 
