@@ -2,7 +2,7 @@
   "name": "motiond",
   "displayName": "Motiond",
   "description": "A Notion-style markdown editor for vibe coders",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "publisher": "IMRAYYY",
   "license": "MIT",
   "icon": "icon.png",
