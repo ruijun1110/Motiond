@@ -1,61 +1,58 @@
-# Notion Markdown Editor
+# Motiond
 
-A VS Code extension that transforms markdown editing into a Notion-like visual experience — blocks, slash commands, drag-and-drop — while keeping files as plain `.md` for AI copilot and git compatibility.
+**A Notion-style markdown editor for vibe coders.**
+
+Tired of writing docs in 'code'? Motiond brings the best Notion-style editing experience to your IDE — visual blocks, slash commands, drag-and-drop. Your files stay as plain `.md`, so they are still git-friendly and AI-friendly.
+
+![Slash Menu](media/slash-menu.png)
+
+---
 
 ## Features
 
-- **Visual Block Editing** - Edit markdown as visual blocks, not raw text
-- **Slash Commands** - Type `/` to insert headings, lists, code blocks, tables, and more
-- **Drag-and-Drop** - Reorder blocks by dragging
-- **Real-Time Sync** - Edits sync between visual editor and source file
-- **Theme Support** - Respects VS Code light/dark theme
-- **Image Support** - Upload images to local `./images/` folder with automatic cleanup
+- **Visual Block Editing** — Write in blocks, not in code
+- **Slash Commands** — Type `/` to insert anything
+- **Syntax Highlighting** — 20+ languages, auto-themed
+- **Drag & Drop** — Reorder blocks effortlessly
+- **Light & Dark Mode** — Follows your VS Code theme
+- **Image Support** — Paste or upload, stored locally
+- **Real-Time Sync** — Edits save instantly to your `.md` file
 
-## Installation
+---
 
-1. Clone this repository
-2. Run `npm install`
-3. Run `npm run build`
-4. Press `F5` in VS Code to launch Extension Development Host
-5. Open any `.md` file and select "Notion Markdown Editor" from the editor options
+## Supported Blocks
 
-## Usage
+| Block Type       | Markdown Output          |
+| ---------------- | ------------------------ |
+| Headings (H1-H6) | `#` to `######`          |
+| Bullet Lists     | `- item`                 |
+| Numbered Lists   | `1. item`                |
+| Checklists       | `- [ ]` / `- [x]`        |
+| Code Blocks      | ` ``` ` with language    |
+| Tables           | Standard markdown tables |
+| Quotes           | `> blockquote`           |
+| Images           | `![alt](path)`           |
 
-- Open any `.md` file
-- Click "Open with..." or use the command palette to select "Notion Markdown Editor"
-- Use `/` to access slash commands
-- Drag blocks using the handle on the left
-- Changes auto-save to the markdown file
+---
 
-## Development
+## How to Use
 
-```bash
-# Install dependencies
-npm install
+1. Open any `.md` file
+2. Right-click → **Open With...** → **Motiond**
+3. Start writing
 
-# Build (with minification)
-npm run build
-
-# Watch mode (auto-rebuild on changes)
-npm run watch
-
-# Lint
-npm run lint
-```
-
-## Technical Stack
-
-- **Editor**: [BlockNote](https://blocknotejs.org/) - Block-based rich text editor
-- **UI Framework**: React 18
-- **Build Tool**: esbuild
-- **VS Code API**: Custom Editor Provider
+---
 
 ## Known Limitations
 
-- Text colors and highlights are not preserved (not supported in standard markdown)
-- Multiple empty lines are normalized to single lines
-- Image dimensions are not preserved in markdown
+- Text colors/highlights don't persist (not supported in standard markdown)
+- Multiple empty lines normalize to single lines
+- Image dimensions aren't preserved
+
+---
 
 ## License
 
-MIT
+MIT — See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for attribution.
+
+Built with [BlockNote](https://blocknotejs.org/).

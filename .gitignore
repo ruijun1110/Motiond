@@ -20,6 +20,12 @@ npm-debug.log*
 
 # Testing
 *.test.md
+test-files/
+test/
 
 # Claude planning files
 .claude/
+
+# Demo and docs (internal)
+demo.md
+docs/

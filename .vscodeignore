@@ -1,9 +1,48 @@
-.vscode/**
-.vscode-test/**
+# Source files (compiled to dist/)
 src/**
-node_modules/**
-.gitignore
-tsconfig.json
-**/*.map
 **/*.ts
 **/*.tsx
+
+# Development config
+.vscode/**
+.vscode-test/**
+tsconfig.json
+.eslintrc*
+.prettierrc*
+
+# Dependencies (bundled into dist/)
+node_modules/**
+
+# Test files
+test/**
+test-files/**
+
+# Documentation (except README)
+docs/**
+CONTRIBUTING.md
+demo.md
+
+# Build artifacts
+**/*.map
+*.vsix
+
+# Git
+.git/**
+.gitignore
+
+# Package manager
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# IDE
+.idea/**
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude
+.claude/**

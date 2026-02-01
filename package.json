@@ -1,13 +1,34 @@
 {
-  "name": "notion-md-editor",
-  "displayName": "Notion Markdown Editor",
-  "description": "A Notion-style visual editor for Markdown files",
-  "version": "0.0.1",
-  "publisher": "your-publisher-name",
+  "name": "motiond",
+  "displayName": "Motiond",
+  "description": "A Notion-style markdown editor for vibe coders",
+  "version": "0.1.0",
+  "publisher": "IMRAYYY",
+  "license": "MIT",
+  "icon": "icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ruijun1110/motiond"
+  },
+  "homepage": "https://github.com/ruijun1110/motiond#readme",
+  "bugs": {
+    "url": "https://github.com/ruijun1110/motiond/issues"
+  },
+  "keywords": [
+    "markdown",
+    "notion",
+    "editor",
+    "block editor",
+    "visual editor",
+    "wysiwyg",
+    "md"
+  ],
   "engines": {
     "vscode": "^1.85.0"
   },
   "categories": [
+    "Formatters",
+    "Visualization",
     "Other"
   ],
   "activationEvents": [],
@@ -40,7 +61,12 @@
     "watch": "concurrently \"npm run watch:extension\" \"npm run watch:webview\"",
     "watch:extension": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --watch",
     "watch:webview": "esbuild ./src/webview/index.tsx --bundle --outfile=dist/webview/index.js --format=iife --loader:.tsx=tsx --loader:.ts=ts --loader:.woff=dataurl --loader:.woff2=dataurl --conditions=style --watch",
-    "lint": "eslint src --ext ts,tsx"
+    "lint": "eslint src --ext ts,tsx",
+    "test": "node test/run-all.js",
+    "test:unit": "node test/unit-tests.js",
+    "test:perf": "node test/performance-test.js",
+    "test:stress": "node test/sync-stress-test.js",
+    "test:quick": "node test/run-all.js --skip-stress"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",
