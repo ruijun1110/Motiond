@@ -6,8 +6,6 @@ A VS Code/Cursor extension that transforms markdown editing into a Notion-like v
 
 ## Problem
 
-What the fuck
-
 Editing markdown in an IDE feels like writing code, not writing content. You see raw syntax instead of formatted text. Meanwhile, Notion offers a beautiful block-based editing experience — but it's disconnected from your codebase.
 
 ## Solution
